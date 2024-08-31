@@ -7,6 +7,7 @@ import com.google.common.io.BaseEncoding;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class JwtService {
             Map<String, Object> extractClaims,
             UserDetails userDetails
     ) {
+        extractClaims.put("role", userDetails.getAuthorities().iterator().next().getAuthority());
         return Jwts
                 .builder()
                 .setClaims(extractClaims)
